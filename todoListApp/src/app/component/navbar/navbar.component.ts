@@ -1,5 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { UserResponse } from '../../data/user-response';
@@ -9,7 +10,7 @@ import { UserService } from '../../services/user.service';
   selector: 'app-navbar',
   standalone: true,
   imports: [NgIf, RouterLink,
-    RouterLinkActive],
+    RouterLinkActive, ReactiveFormsModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })

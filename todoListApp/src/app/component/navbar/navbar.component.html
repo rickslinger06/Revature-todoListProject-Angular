@@ -1,4 +1,5 @@
-<header class="topbar" *ngIf="loggedIn">
+@if (loggedIn) {
+<header class="topbar">
     <button class="icon-btn" (click)="toggle()" aria-label="Toggle menu">
         <i class="bi bi-list"></i>
     </button>
@@ -12,8 +13,11 @@
         <span class="badge">3</span>
     </button>
 </header>
+}
 
-<div *ngIf="isOpen" (click)="close()"></div>
+@if (isOpen) {
+<div class="backdrop" (click)="close()"></div>
+}
 
 <aside class="drawer" [class.open]="isOpen">
     <div class="drawer-head">
@@ -22,10 +26,14 @@
     </div>
 
     <nav class="drawer-links" (click)="close()">
-        <p style="color: blue;">Welcome! {{user?.username}}</p>
+        <p style="color: blue;">Welcome! {{ user?.username }}</p>
+
         <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
         <a routerLink="/settings/profile" routerLinkActive="active">Settings</a>
-        <a *ngIf="user?.role === 'ADMIN'" routerLink="/users" routerLinkActive="active">User Management</a>
+
+        @if (user?.role === 'ADMIN') {
+        <a routerLink="/users" routerLinkActive="active">User Management</a>
+        }
 
         <a (click)="logout()">Logout</a>
     </nav>
