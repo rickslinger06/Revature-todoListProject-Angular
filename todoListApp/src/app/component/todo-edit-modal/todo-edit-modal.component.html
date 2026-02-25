@@ -1,0 +1,48 @@
+<!-- Fullscreen Backdrop -->
+<div class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 
+     d-flex align-items-center justify-content-center" style="z-index: 2000;">
+
+    <!-- Centered Modal Card -->
+    <div class="card shadow p-3 bg-white" style="max-width: 500px; width: 90%; border-radius: 10px;">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Edit To-Do Item</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+        </div>
+
+        <!-- Body -->
+        <form [formGroup]="form">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input class="form-control" formControlName="title" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" rows="3" formControlName="description"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Due Date</label>
+                <input type="date" class="form-control" formControlName="dueDate" />
+            </div>
+        </form>
+
+        <!-- Error -->
+        @if (errorMsg()) {
+        <div class="alert alert-danger mt-2">
+            {{ errorMsg() }}
+        </div>
+        }
+
+        <!-- Footer -->
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <button class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+            <button class="btn btn-success" (click)="save()" [disabled]="form.invalid">
+                Update
+            </button>
+        </div>
+
+    </div>
+</div>

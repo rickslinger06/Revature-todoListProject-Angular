@@ -1,0 +1,77 @@
+<!-- users.component.html -->
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-primary fw-bold">All Users</h2>
+
+    @if (users().length > 0) {
+    <table class="table table-hover table-striped mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (user of users(); track $index) {
+            <tr>
+                <td>{{ user.userId }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <span class="badge" [ngClass]="{
+                  'bg-success': user.role === 'ADMIN',
+                  'bg-primary': user.role === 'USER'
+                }">
+                        {{ user.role }}
+                    </span>
+                </td>
+
+                <td style="cursor: pointer;" class="text-primary" (click)="toggleRole(user.userId,user.role)">
+                    <i class="bi bi-arrow-repeat"></i>
+                    <small>Switch Role</small>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    }
+
+    @if (users().length === 0) {
+    <p>No users found.</p>
+    }
+
+    <!-- Pagination -->
+    @if (users().length > 0) {
+    <nav class="mt-3">
+        <ul class="pagination">
+
+            <!-- Previous -->
+            <li class="page-item" [class.disabled]="isFirstPage()">
+                <button class="page-link" (click)="previousPage()" [disabled]="isFirstPage()">
+                    Previous
+                </button>
+            </li>
+
+            <!-- Current page display (1-based) -->
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Page {{ currentPage() + 1 }}
+                </span>
+            </li>
+
+            <!-- Next -->
+            <li class="page-item" [class.disabled]="isLastPage()">
+                <button class="page-link" (click)="nextPage()" [disabled]="isLastPage()">
+                    Next
+                </button>
+            </li>
+
+        </ul>
+    </nav>
+    }
+
+</div>

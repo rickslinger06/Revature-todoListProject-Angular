@@ -1,0 +1,73 @@
+<section class="userRegistration">
+    <div class="container w-50">
+        <h5 class="text-center mb-3">User Registration</h5>
+
+        <div class="card">
+            <div class="card-body">
+
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Username</label>
+
+                        <input type="text" id="username" formControlName="username"
+                            placeholder="Please enter your username" class="form-control" />
+
+                        @if (registerForm.get('username')?.touched &&
+                        registerForm.get('username')?.hasError('required')) {
+                        <small class="text-danger">Username required</small>
+                        }
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email</label>
+
+                        <input type="email" id="email" formControlName="email" placeholder="you@example.com"
+                            class="form-control" />
+
+                        @if (registerForm.get('email')?.touched &&
+                        registerForm.get('email')?.hasError('required')) {
+                        <small class="text-danger">Email is required</small>
+                        }
+
+                        @if (registerForm.get('email')?.touched &&
+                        registerForm.get('email')?.hasError('email')) {
+                        <small class="text-danger">Please enter a valid email address</small>
+                        }
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Password</label>
+
+                        <input type="password" id="password" formControlName="password" placeholder="Enter password"
+                            class="form-control" />
+
+                        @if (registerForm.get('password')?.touched &&
+                        registerForm.get('password')?.hasError('required')) {
+                        <small class="text-danger">Password is required</small>
+                        }
+
+                        @if (registerForm.get('password')?.touched &&
+                        registerForm.get('password')?.hasError('minlength')) {
+                        <small class="text-danger">
+                            Password must be at least
+                            {{ registerForm.get('password')?.errors?.['minlength']?.requiredLength }}
+                            characters
+                        </small>
+                        }
+                    </div>
+
+                    <button (click)="onSubmit()" type="submit" class="btn btn-primary"
+                        [disabled]="registerForm.invalid">
+                        Register
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>

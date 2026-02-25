@@ -1,0 +1,59 @@
+<div class="container py-4 profile-page">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <!-- Page Title -->
+            <h3 class="fw-bold mb-3 text-center">Your Profile</h3>
+
+            <!-- Profile Card -->
+            <div class="card shadow-sm border-0 p-3">
+
+                <!-- Avatar + Name -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="profile-avatar me-3">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+
+                    <div>
+                        <h5 class="mb-1">{{ user?.username }}</h5>
+                        <div class="text-muted small">{{ user?.email }}</div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Details Section -->
+                <h6 class="text-muted text-uppercase small mb-2">Account Details</h6>
+
+                <dl class="row small mb-0">
+                    <dt class="col-4 text-muted">Username</dt>
+                    <dd class="col-8">{{ user?.username }}</dd>
+
+                    <dt class="col-4 text-muted">Email</dt>
+                    <dd class="col-8">{{ user?.email }}</dd>
+
+                    <dt class="col-4 text-muted">Role</dt>
+                    <dd class="col-8">
+                        <span class="badge bg-primary">{{ user?.role }}</span>
+                    </dd>
+                </dl>
+
+                <hr>
+
+                <div class="text-muted">
+                    <span routerLink="/settings/resetPassword" style="cursor: pointer;" class="badge bg-primary">reset
+                        password</span>
+                </div>
+
+                <!-- Back Button -->
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-outline-secondary btn-sm" routerLink="/dashboard" routerLinkActive="active">
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Back to Dashboard
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
