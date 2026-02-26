@@ -4,7 +4,8 @@
 
     <span style="color: blue; cursor: pointer;" (click)="addingTodoItem()">+ Add todo item</span>
 
-    <!-- ========== ADD ITEM FORM ========== -->
+    <!-- ===================== ADD ITEM FORM ======================-->
+
     @if (addingItem()) {
     <div class="container mt-4 mb-3">
         <form [formGroup]="addItemForm" (ngSubmit)="submitItem()">
@@ -78,7 +79,7 @@
     }
 
 
-    <!-- ======================= KANBAN COLUMNS ========================= -->
+    <!-- ======================= KANBAN STYLE COLUMNS ========================= -->
     <div class="row g-4 mt-4">
 
         <!-- ========== TO DO COLUMN ========== -->
@@ -116,7 +117,7 @@
 
                     <hr />
 
-                    <!-- ========== Sub Task section ========== -->
+                    <!-- ==========TODO Sub Task section ========== -->
                     <div id="todo-subTask">
                         <p (click)="openSubTaskModal(item)" class="add-item text-primary" style="cursor: pointer;">
                             + Add subtask
@@ -217,6 +218,8 @@
                     <hr />
 
                     <div>
+
+                        <!-- ==========COMPLETED Sub Task section ========== -->
                         <div class="fw-semibold small text-uppercase text-muted mb-2">Subtasks</div>
 
                         @for (sub of item.subTasks; track $index) {
@@ -282,6 +285,8 @@
                     }
 
                     <div>
+
+                        <!-- ==========CLOSED Sub Task section ========== -->
                         <div class="fw-semibold small text-uppercase text-muted mb-2">Subtasks</div>
 
                         @for (sub of item.subTasks; track $index) {
