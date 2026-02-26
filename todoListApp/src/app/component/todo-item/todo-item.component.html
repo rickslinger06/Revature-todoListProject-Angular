@@ -69,6 +69,15 @@
         (closed)="handleSubTaskClosed()"></app-sub-task-modal>
     }
 
+
+    <!-- ======================= Editing Subtask Modal ========================= -->
+    @if (activeSubTaskForEdit()) {
+    <app-edit-sub-task [subTask]="activeSubTaskForEdit()!" (updated)="handleEditSubTaskSaved($event)"
+        (closed)="handleEditSubTaskClosed()">
+    </app-edit-sub-task>
+    }
+
+
     <!-- ======================= KANBAN COLUMNS ========================= -->
     <div class="row g-4 mt-4">
 
@@ -116,12 +125,24 @@
                         <div class="fw-semibold small text-uppercase text-muted mb-2">Subtasks</div>
 
                         @for (sub of item.subTasks; track $index) {
+
                         <div class="d-flex align-items-center justify-content-between py-1">
 
-                            <div data-text="Mark Done" class="d-flex align-items-center gap-2 subMark">
-                                <i (click)="markSubTaskDone(sub.subTaskId)"
-                                    [ngClass]="sub.completed ? 'bi-check-circle-fill text-success' : 'bi-circle text-secondary'"></i>
+                            <div class="d-flex align-items-center gap-2 subMark">
+                                <!-- Trash Icon -->
+                                <i data-text="delete" (click)="deleteSubTask(sub.subTaskId)"
+                                    class="bi bi-trash sub-icon  status-icon delete-icon"></i>
 
+                                <!-- Edit Icon -->
+                                <i data-text="edit" (click)="openEditSubtaskModal(sub)"
+                                    class="bi bi-pen sub-icon status-icon edit-icon"></i>
+
+                                <!-- Check / Circle Icon -->
+                                <i data-text="complete" (click)="markSubTaskDone(sub.subTaskId)"
+                                    class="sub-icon status-icon"
+                                    [ngClass]="sub.completed ? 'bi-check-circle-fill text-success' : 'bi-circle text-secondary complete-icon'"></i>
+
+                                <!-- Description -->
                                 <span [ngClass]="sub.completed ? 'text-decoration-line-through text-muted' : ''">
                                     {{ sub.description }}
                                 </span>
@@ -144,12 +165,12 @@
 
                     <div class="d-flex justify-content-between align-items-center mt-3">
 
-                        <div class="d-flex gap-3">
-                            <div class="trash-btn mr-5" data-text="delete this?">
+                        <div class="d-flex">
+                            <div class="trash-btn mr-5" data-text="delete todo item">
                                 <i class="bi bi-trash" (click)="deletingItemConfirmation(item.todoId)"></i>
                             </div>
 
-                            <div class="editBtn mr-5" data-text="Edit">
+                            <div class="editBtn mr-5" data-text="edit todo item">
                                 <i class="bi bi-pencil" (click)="openEdit(item)"></i>
                             </div>
                         </div>

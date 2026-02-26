@@ -1,4 +1,4 @@
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe, NgClass, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
@@ -11,15 +11,16 @@ import { SubTaskService } from '../../services/sub-task.service';
 import { TodoItemService } from '../../services/todo-item.service';
 import { UserService } from '../../services/user.service';
 import { NotificationService } from '../../util/notification.service';
+import { EditSubTaskComponent } from "../edit-sub-task/edit-sub-task.component";
 import { SubTaskComponent } from "../sub-task/sub-task.component";
 import { TodoEditModalComponent } from "../todo-edit-modal/todo-edit-modal.component";
 
 @Component({
   selector: 'app-todo-item',
   standalone: true,
-  imports: [DatePipe, NgClass, ReactiveFormsModule, TodoEditModalComponent, SubTaskComponent],
+  imports: [DatePipe, NgClass, ReactiveFormsModule, TodoEditModalComponent, SubTaskComponent, EditSubTaskComponent, NgIf],
   templateUrl: './todo-item.component.html',
-  styleUrls: ['./todo-item.component.css'] // <- use styleUrls (plural)
+  styleUrls: ['./todo-item.component.css']
 })
 export class TodoItemComponent implements OnInit {
 
@@ -32,6 +33,8 @@ export class TodoItemComponent implements OnInit {
   addedItemResponse = signal<TodoItemResponse | null>(null);
   errorAddingItem = signal<string | null>(null);
   activeTodoForSubtask = signal<TodoItemResponse | null>(null);
+  deleteSubTaskMessage = signal("");
+
 
 
   deletedItemMessage = "";
@@ -249,7 +252,7 @@ export class TodoItemComponent implements OnInit {
   }
 
 
-  //=============subtask section down==================
+  //=============sCreate Subtask section down==================
 
 
   openSubTaskModal(todo: TodoItemResponse) {
@@ -259,7 +262,7 @@ export class TodoItemComponent implements OnInit {
   handleSubTaskSaved(newSubTask: SubTaskResponse) {
     const current = this.activeTodoForSubtask();
     if (!current) return;
-    // ush into the correct todo's subTasks list
+    // push into the correct todo's subTasks list
     current.subTasks.push(newSubTask);
     // optionally close modal
     this.activeTodoForSubtask.set(null);
@@ -271,7 +274,7 @@ export class TodoItemComponent implements OnInit {
 
   //sub task mark it done
   markSubTaskDone(subTaskId: number) {
-    const ok = confirm("Confirm to mark this sub-task as done?");
+    const ok = confirm("Confirm to mark this sub-task as complete?");
     if (ok) {
       this.subService.closeSubTask(subTaskId).subscribe(
         {
@@ -281,6 +284,7 @@ export class TodoItemComponent implements OnInit {
               .find(s => s.subTaskId === subTaskId);
             if (subTask) {
               subTask.completed = res.completed;
+              subTask.updatedAt = res.updatedAt;
             }
           },
           error: (err) => {
@@ -293,6 +297,71 @@ export class TodoItemComponent implements OnInit {
     }
   }
 
+
+  /* ======    Edit subtask =======*/
+  // which subtask is currently being edited in a modal
+  activeSubTaskForEdit = signal<SubTaskResponse | null>(null);
+
+  /* ====== open edit-subtask modal ====== */
+  openEditSubtaskModal(sub: SubTaskResponse) {
+
+    this.activeSubTaskForEdit.set(sub);
+  }
+
+  /* ====== handle successful edit from modal ====== */
+  handleEditSubTaskSaved(updated: SubTaskResponse) {
+    const current = this.activeSubTaskForEdit();
+    if (!current) {
+      this.activeSubTaskForEdit.set(null);
+      return;
+    }
+
+    // update the fields you care about on the original object
+    current.description = updated.description;
+    current.updatedAt = updated.updatedAt;
+
+    // close modal
+    this.activeSubTaskForEdit.set(null);
+  }
+
+  /* ====== handle cancel/close from modal ====== */
+  handleEditSubTaskClosed() {
+    this.activeSubTaskForEdit.set(null);
+  }
+
+
+
+  /* ======    delete subtask =======*/
+
+  deleteSubTask(subTaskId: number) {
+    const ok = confirm("Delete subtask?");
+    if (!ok) return;
+
+    this.subService.deleteSubtask(subTaskId).subscribe({
+      next: (res) => {
+        // res is "Subtask successfully deleted"
+        this.deleteSubTaskMessage.set(res as string);
+        // remove from UI
+        this.itemsForView.forEach(todo => {
+          if (todo.subTasks) {
+            const idx = todo.subTasks.findIndex(s => s.subTaskId === subTaskId);
+            if (idx !== -1) {
+              todo.subTasks.splice(idx, 1);
+            }
+          }
+        });
+
+
+      },
+      error: (err) => {
+        console.error('Delete error:', err);
+        alert("Something went wrong while deleting this sub-task.");
+      }
+    });
+  }
+
+
+  //=============label todo item for username =================
   //get Item UserId;
 
   getItemUseRByUserId(userId: string) {

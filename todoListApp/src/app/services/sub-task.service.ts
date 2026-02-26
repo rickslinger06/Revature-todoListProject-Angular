@@ -29,5 +29,18 @@ export class SubTaskService {
       { withCredentials: true })
   }
 
+  editSubTask(subTaskId: number, subTaskReq: SubTaskRequest) {
+    return this.http.patch<SubTaskResponse>(`${this.baseUrl}/user/task/edit/${subTaskId}`, subTaskReq,
+      { withCredentials: true }
+    )
+  }
+
+  deleteSubtask(subtaskId: number) {
+    return this.http.delete<string>(`${this.baseUrl}/user/task/delete/${subtaskId}`, {
+      withCredentials: true,
+      responseType: 'text' as 'json'
+    });
+  }
+
 
 }

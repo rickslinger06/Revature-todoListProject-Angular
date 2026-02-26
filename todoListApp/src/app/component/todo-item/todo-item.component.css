@@ -43,7 +43,7 @@
     display: inline-flex;
     align-items: center;
     margin-left: 12px;
-    margin-right: 1rem;
+    margin-right: .75rem;
     cursor: pointer;
 }
 
@@ -51,8 +51,8 @@
 .trash-btn:hover::before {
     content: attr(data-text);
     position: absolute;
-    top: 50%;
-    left: 120%;
+    bottom: 50%;
+    left: 20%;
     transform: translateY(-50%);
     white-space: nowrap;
     background: #f7cdcd;
@@ -75,9 +75,8 @@
 .editBtn:hover::before {
     content: attr(data-text);
     position: absolute;
-    top: 50%;
-    left: 120%;
-    /* show tooltip to the RIGHT of the icon */
+    bottom: 50%;
+    left: 20%;
     transform: translateY(-50%);
     background: #0a76e2;
     color: #fff;
@@ -115,21 +114,117 @@
     border-radius: 5%;
 }
 
-.subMark {
+.sub-icon {
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    font-size: 15px;
+    font-size: 1.2rem;
+    transition: color 0.2s ease, transform 0.15s ease;
 }
 
-.subMark:not(.done) i:hover::before {
+.status-icon.text-secondary:hover::before {
     content: "\F26A";
-    font-family: "bootstrap-icons";
     color: #198754;
-
+    transform: scale(1.05);
 }
+
+
+/* base icon */
+.delete-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+/* turn icon red on hover */
+.delete-icon:hover {
+    color: #dc3545;
+}
+
+/* tooltip base (hidden by default) */
+.delete-icon::after {
+    content: attr(data-text);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease-in-out;
+    background: rgb(139, 0, 0);
+    color: white;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+/* show tooltip on hover */
+.delete-icon:hover::after {
+    opacity: 1;
+}
+
+.edit-icon::after {
+    content: attr(data-text);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease-in-out;
+    background: rgb(0, 26, 122);
+    color: white;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+.edit-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.edit-icon:hover {
+    color: #0023e8;
+}
+
+.edit-icon:hover::after {
+    opacity: 1;
+}
+
+
+.complete-icon::after {
+    content: attr(data-text);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease-in-out;
+    background: rgb(0, 122, 16);
+    color: white;
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+.complete-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.complete-icon:hover {
+    color: #0023e8;
+}
+
+.complete-icon:hover::after {
+    opacity: 1;
+}
+
 
 .errSubTask {
     font-size: 10px;
