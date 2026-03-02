@@ -33,6 +33,7 @@ export class RegisterComponent {
 
 
   onSubmit() {
+    if (this.isSubmitting) return; // Prevent double submit
     this.errorMessage = null;
     this.successMessage = null;
 
@@ -49,7 +50,7 @@ export class RegisterComponent {
       next: () => {
         this.isSubmitting = false;
         this.successMessage = 'Registration successful. You can now log in.';
-        // navigate to log in page after success registration
+        alert(this.successMessage);
         this.router.navigate(['/login']);
       },
       error: (err) => {
